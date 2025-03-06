@@ -1,13 +1,24 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { LoginComponent } from './pages/login/login.component';
+import { FooComponent } from "./foo/foo.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, RouterLink, FooComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'MyApp-3';
+  constructor(private router: Router) {}
+  title = 'PROject';
+ 
+ logout(){
+  localStorage.removeItem('auth1');
+  alert('logged out successfully');
+  this.router.navigateByUrl('login')
+ }
+
 }

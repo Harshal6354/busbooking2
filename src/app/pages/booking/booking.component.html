@@ -1,0 +1,44 @@
+<!-- Booking Form -->
+  <section id="booking-form" class="my-4"  >
+    <div class="container mt-5 mb-10rem">
+        <div class="row"> 
+            <div class="col-4">
+                <div class="row">
+                    <div class="col-12 text-end">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2907/2907720.png" alt="Driver Icon" class="driver">
+                    </div>
+                </div>
+                   <div class="row">
+                    @for (item of seatArray; track $index)          
+                    {               
+                        <div class="col-4">
+                        <button class="seat" (click)="getUserSeat()">{{item.seat}}</button>
+                        </div>
+                    }  
+                </div>
+              </div>
+            @for (item of userSelectSeatArray; track $index) {
+                <div class="col-8">  
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="">Passanger Name</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="col-3">
+                            <label for="">Age</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="col-3">
+                            <label for="">Gender</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="col-3">
+                            <label for="">Seat No</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                  </div>
+            }
+        </div> 
+      </div> 
+</section>

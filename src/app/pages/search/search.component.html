@@ -1,0 +1,100 @@
+<!-- Search Form -->
+<div class="container">
+    <header class="my-4">
+      <h1 class="text-center">Bus Booking System</h1>
+  </header>
+  <section>
+      <div class="container mt-5 d-flex justify-content-center">
+          <form class="search-form d-flex align-items-center shadow-lg">
+            <div class="row w-100 text-white">
+              <div class="col-md-3 d-flex align-items-center">
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-bus-front"></i></span>
+                  <select class="form-select" name="fromLocation">
+                    <option>Select from Loction </option>
+                      @for (item of busList ; track $index) 
+                      {
+                       <option [value]="item.busName">{{item.busName}}</option>
+                      }                           
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-1 text-center d-flex align-items-center justify-content-center">
+                <i style="color: rgb(0, 0, 0); margin-top: 20px;" class="fa-solid fa-right-left"></i>
+              </div>
+              <div class="col-md-3 d-flex align-items-center">
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-bus-front"></i></span>
+                  <select class="form-select" name="fromLocation">
+                    <option>Select from Loction </option>
+                      @for (item of busList ; track $index) {
+                        <option [value]="item.toLocation">{{item.toLocation}}</option>
+                      }                           
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3 d-flex align-items-center">
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                  <input type="date" class="form-control" name="travelDate" [(ngModel)]="searchObj.travelDate" placeholder="Date" value="17 Aug 2024">
+                </div>   
+              </div>
+              <div class="col-md-2 text-center">
+                <button type="submit" (click)="onSearch()" class="btn btn-light text-danger w-100">SEARCH BUSES</button>
+              </div>
+            </div>
+          </form>
+         </div>
+</section>
+  <!-- Buses List -->
+  <section id="buses-list" class="my-4">
+      <h2>Available Buses</h2>
+       @for (items of busList; track $index) {
+        <div class="row">
+          <div class="col-12">
+              <div class="card mb-3">
+                  <div class="row g-0">
+                    <div class="col-md-3 d-flex flex-column justify-content-center align-items-center">
+                      <h5 class="card-title">{{items.busName}}</h5>
+                      <p class="card-text">A/C Sleeper (2+1)</p>
+                    </div>
+                    <div class="col-md-9">
+                      <div class="card-body row">
+                        <div class="col-md-2">
+                          <p class="card-text"><strong>{{items.departureTime | date:"hh-mm-ss" }}</strong></p>
+                          <p class="card-text">Departure</p>
+                        </div>
+                        <div class="col-md-2">
+                          <p class="card-text"><strong>13h 55m</strong></p>
+                          <p class="card-text">Duration</p>
+                        </div>
+                        <div class="col-md-2">
+                          <p class="card-text"><strong>08:55</strong></p>
+                          <p class="card-text">Arrival</p>
+                          <p class="text-danger">18-Aug</p>
+                        </div>
+                        <div class="col-md-2">
+                        <p class="card-text"><strong>4.5</strong> ⭐</p>
+                          <p class="card-text">567 Ratings</p>
+                        </div>
+                        <div class="col-md-2">
+                          <p class="card-text"><strong>{{items.price}} INR</strong></p>
+                          <p class="card-text"><b>{{items.availableSeat}}</b> Seats are available out of <b>{{items.totalSeats}}</b></p>
+                        </div>
+                        <div class="col-md-2 text-end">
+                         <button class="btn btn-danger" [routerLink]="['/booking/',items.scheduleID]">Book Seat</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+          </div>
+      </div>
+      }  
+  </section>
+          <!-- Booking Form -->
+     </div>
+     <app-carso></app-carso>
+   
+  
+ 
