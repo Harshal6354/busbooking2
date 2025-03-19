@@ -4,20 +4,18 @@ import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
 import { MasterService } from '../../services/master.service';
 import { CommonModule } from '@angular/common';
-
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [RouterLink, FormsModule,CommonModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'] // Corrected this line
+  styleUrls: ['./login.component.css'] 
 })
 export class LoginComponent {
   router = inject(Router);
   masterSrv = inject(MasterService);
-
-  loggedUserData: any;
-   registerObj: any = {
+   loggedUserData: any;
+   registerObj: any ={
     "userId": 0,
     "userName": "harshal",
     "emailId": "",
@@ -37,11 +35,8 @@ export class LoginComponent {
     }
     else{
       alert("wrong credential")
-    }
-    
+    } 
 }
+  
 
-  AllReadyRegister() {
-    this.router.navigate(['/search']);
-  }
 }

@@ -1,90 +1,88 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { MasterService } from '../../services/master.service';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-booking',
   standalone: true,
-  imports: [],
+  imports: [FormsModule, CommonModule],
   templateUrl: './booking.component.html',
-  styleUrl: './booking.component.css'
+  styleUrls: ['./booking.component.css']
 })
-export class BookingComponent {
-  schedulId: number = 0;
+export class BookingComponent implements OnInit {
+  router = inject(Router);
+  selectedSeat: any = null;
 
-  userSelectSeatArray:number[]=[];
-  scheduledata: any;
-  ScheduleBusDat:any;
+  // Seat data
   seatArray: any[] = [
-    {
-      "seat": "1",
-      "Department":6
-    },
-    {
-      "seat": "2",
-      "Department":5
-    },
-    {
-      "seat": "3",
-      "Department":4
-    },
-    {
-      "seat": "4",
-      "Department":5
-    },
-    {
-      "seat": "5",
-      "Department":4
-    },
-    {
-      "seat": "6",
-      "Department":5
-    },
-    {
-      "seat": "7",
-      "Department":6
-    },
-    {
-      "seat": "8",
-      "Department":4
-    },
-    {
-      "seat": "9",
-      "Department":5
-    },
-    {
-      "seat": "10",
-      "Department":6
-    },
-    {
-      "seat": "11",
-      "Department":4
-    },
-    {
-      "seat": "12",
-      "Department":5
-    },
-    {
-      "seat": "13",
-      "Department":6
-    },
+    { seat: '1', isBooked: false, passenger: null },
+    { seat: '2', isBooked: false, passenger: null },
+    { seat: '3', isBooked: false, passenger: null },
+    { seat: '4', isBooked: false, passenger: null },
+    { seat: '5', isBooked: false, passenger: null },
+    { seat: '6', isBooked: false, passenger: null },
+    { seat: '7', isBooked: false, passenger: null },
+    { seat: '8', isBooked: false, passenger: null },
+    { seat: '9', isBooked: false, passenger: null },
+    { seat: '10', isBooked: false, passenger: null },
+    { seat: '11', isBooked: false, passenger: null },
+    { seat: '12', isBooked: false, passenger: null },
+    { seat: '13', isBooked: false, passenger: null },
+    { seat: '14', isBooked: false, passenger: null },
+    { seat: '15', isBooked: false, passenger: null },
+    { seat: '16', isBooked: false, passenger: null },
+    { seat: '17', isBooked: false, passenger: null },
   ];
-   constructor(private activedRout: ActivatedRoute, private masterSrv: MasterService) {
-     this.activedRout.params.subscribe((res: any) => {
-      
-      this.schedulId = res.id;
-    })
-  }
-  color:string="red"
 
-   getUserSeat(){
-    this.color="blue";
-   }
-   getScheduleDataisByid() {
-    this.masterSrv.getScehuleById(this.schedulId).subscribe((res: any) => {
-      this.scheduledata = res;   
-      for (let index = 0; index <= this.scheduledata.totalSeats; index++)
-         this.seatArray.push(index)
-    })
+  // Passenger form data
+  passenger = { name: '', age: '', gender: '', seat: '' };
+
+  ngOnInit() {
+    const savedSeats = localStorage.getItem('seatArray');
+    console.log('Saved Seats in ngOnInit:', savedSeats); // ✅ Confirm loaded data
+
+    if (savedSeats) {
+      this.seatArray = JSON.parse(savedSeats);
+    }
   }
-  
+
+  // Handle seat selection
+  selectSeat(seat: any) {
+    if (!seat.isBooked) {
+      this.selectedSeat = seat;
+      this.passenger.seat = seat.seat;
+    }
+  }
+  // Submit passenger details
+  submitPassenger() {
+    if (this.passenger.name && this.passenger.age && this.passenger.gender) {
+      this.selectedSeat.isBooked = true;
+      this.selectedSeat.passenger = { ...this.passenger };
+
+      console.log('Before Saving:', this.seatArray);  // ✅ Confirm data before saving
+      localStorage.setItem('seatArray', JSON.stringify(this.seatArray));
+
+      this.passenger = { name: '', age: '', gender: '', seat: '' };
+      this.selectedSeat = null;
+    }
+  }
+
+  // Go to payment page with selected seat data
+  goToPayment(seat: any) {
+    if (seat.isBooked && seat.passenger) {
+      this.router.navigate(['/payment'], { queryParams: { seats: JSON.stringify([seat]) } });
+    }
+  }
+
+  // Group payment for multiple seats
+  groupPayment() {
+    const selectedSeats = this.seatArray.filter(seat => seat.isSelected && seat.isBooked);
+    if (selectedSeats.length > 0) {
+      localStorage.setItem('selectedSeats', JSON.stringify(selectedSeats));
+      this.router.navigate(['/payment'], { queryParams: { seats: JSON.stringify(selectedSeats) } });
+    } else {
+      alert('Please select at least 2 booked seats for payment.');
+    }
+  }
 }
